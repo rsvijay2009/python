@@ -25,7 +25,7 @@ class SlackUsers:
         return parser
 
     def call_api(self):
-        self.url = 'https://slack.com/api/users.list?token='+self.token+'&limit=200&pretty=1'
+        self.url = 'https://slack.com/api/users.list?token='+self.token+'&limit=1000&pretty=1'
         session_with_header = requests.Session()
         session_with_header.headers.update({'Authorization': 'Basic '+self.token})
         response = session_with_header.get(self.url)
@@ -57,7 +57,23 @@ class SlackUsers:
         data_table = pd.DataFrame(sorted_user_dict)
         data_table = data_table.T
         data_table.columns = ["Name", "Email"]
-        print(tabulate(data_table, headers="keys", tablefmt="psql"))
+        user_data = tabulate(data_table, headers="keys", tablefmt="psql")
+
+        user_data_file = open("slack_user_profile.txt", "w")
+        user_data_file.write(user_data)
+        user_data_file.close()
+
+        file_to_attach = {
+            'file' : ('slack_user_profile.txt', open('slack_user_profile.txt', 'rb'), 'txt')
+        }
+
+        payload={
+          "filename": "slack_user_profile.txt",
+          "token": self.token,
+          "channels": ['#vsts-mini'],
+        }
+
+        r = requests.post("https://slack.com/api/files.upload", params=payload, files=file_to_attach)
     
     def run(self):
         parser = self.get_arg_parser()
