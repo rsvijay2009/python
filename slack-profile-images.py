@@ -25,7 +25,7 @@ class SlackUsers:
         return parser
 
     def call_api(self):
-        self.url = 'https://slack.com/api/users.list?token='+self.token+'&limit=1000&pretty=1'
+        self.url = 'https://slack.com/api/users.list?token='+self.token+'&limit=200&pretty=1'
         session_with_header = requests.Session()
         session_with_header.headers.update({'Authorization': 'Basic '+self.token})
         response = session_with_header.get(self.url)
