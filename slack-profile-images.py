@@ -25,7 +25,7 @@ class SlackUsers:
         return parser
 
     def call_api(self):
-        self.url = 'https://slack.com/api/users.list?token='+self.token+'&limit=2000&pretty=1'
+        self.url = 'https://slack.com/api/users.list?token='+ self.token +'&limit=2000&pretty=1'
         session_with_header = requests.Session()
         session_with_header.headers.update({'Authorization': 'Basic '+self.token})
         response = session_with_header.get(self.url)
@@ -70,7 +70,7 @@ class SlackUsers:
         payload={
           "filename": "slack_user_profile.txt",
           "token": self.token,
-          "channels": ['#vsts-mini'],
+          "channels": ['#internal-systems-ehi'],
         }
 
         r = requests.post("https://slack.com/api/files.upload", params=payload, files=file_to_attach)
