@@ -71,6 +71,7 @@ class SlackUsers:
           "filename": "slack_user_profile.txt",
           "token": self.token,
           "channels": ['#internal-systems-ehi'],
+          "text": "List of users not having their profile image in slack"
         }
 
         r = requests.post("https://slack.com/api/files.upload", params=payload, files=file_to_attach)
